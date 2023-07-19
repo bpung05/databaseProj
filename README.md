@@ -11,9 +11,7 @@
 
         d. flask_application -> holds the flask application itself. You will call this directory in your python command prompt to run the dev server
 
-        The directory :
-
-        overview:
+        The directory overview:
             -lahman_csvs
             -database_dump
             -flask_application

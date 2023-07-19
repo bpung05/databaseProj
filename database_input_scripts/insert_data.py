@@ -12,7 +12,9 @@ config = {
     "database": cfg.mysql['database']
 }
 
-csvs_to_insert = ['AllstarFull', 'Appearances' , 'AwardsManagers', 'AwardsShareManagers', 'AwardsSharePlayers','Batting']
+csvs_to_insert = ['AllstarFull', 'Appearances' , 'AwardsPlayers', 'AwardsManagers', 'AwardsShareManagers', 'AwardsSharePlayers','Batting', 'BattingPost', 'CollegePlaying', 
+                  'Fielding', 'FieldingOF', 'FieldingOFsplit', 'FieldingPost', 'HallOfFame', 'HomeGames', 'Managers', 'ManagersHalf', 'Parks', 'People', 'Pitching',
+                  'PitchingPost', 'Salaries', 'Schools', 'SeriesPost', 'Teams', 'TeamsFranchises', 'TeamsHalf']
 
 for csv in csvs_to_insert:
     # Define the CSV file path. Ensure that it is relative. Use the os python library to join the path.
@@ -39,7 +41,11 @@ for csv in csvs_to_insert:
         for val in row.values:
             if val == 'NULL':
                 val_string.append(val)
+            elif("'" in str(val)):
+                quoted = str(val).replace("'", "''")
+                val_string.append(f"'{quoted}'")
             else:
+                
                 val_string.append(str(f"'{val}'"))
 
         values = ", ".join(val_string)
