@@ -33,7 +33,7 @@ for csv in csvs_to_insert:
 
 
 
-    headers = ", ".join([str(header) for header in column_headers])
+    #headers = ", ".join([str(header) for header in column_headers]) -> dont need as of (7/20)
 
     # Insert the values into the new table
     for _, row in data_frame.iterrows():
@@ -49,7 +49,7 @@ for csv in csvs_to_insert:
                 val_string.append(str(f"'{val}'"))
 
         values = ", ".join(val_string)
-        insert_query = f"INSERT INTO {csv} ({headers}) VALUES ({values});"
+        insert_query = f"INSERT INTO {str(csv).lower()} VALUES ({values});"
         
         
         

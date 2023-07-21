@@ -36,7 +36,6 @@
 
     3. login with your new user: 
 
-
         1. Open a new command line and find the directory for your mariadb installation
         2. Change directory to path of .\mariadb (cd <path>)
         3. Now type in 'bin\mysql -u web -p' and input your password. This command calls the bin directory and mysql commandlet function calling your user and letting you type in your password.
@@ -48,8 +47,31 @@
 
 
     5. Create tables and insert data into tables 
+
         a. Use my 'create_tables.sql' script found in the 'database_input_scripts' directory to create your tables.
         This script createss the database, uses the pung database, and then also creates all the tables. You can run this .sql script and it will just create the instances of all the talbes you need. You should be able to describe and show the tables... but there will be no data yet.
 
+
+        Your database should have flipped to pung after running create_tables.sql. If it was not working ensure you have mariadb running.
+
+        try: (assume you are working in pung) :  "show tables" ....
+
+        from there you should see 27 tables created.
+
+
         b. use the python script 'insert_data.py' to insert all your data.
         -please note that I have included the mariadb config file in two places: one of which is the database_input_scripts to allow my scripts to connect to the database. You may need to change this if you are using a different user than is defined in the instrcutions and previous setup. The config file has the web, mypass user in it.
+
+        *****ENSURE THAT YOU ARE WORKING IN THE DATABASE_INPUT_SCRIPTS DIRECTORY WHEN RUNNING THIS*******
+
+        Please change cd to the database_input_scripts directory. This is because I use relative paths in my insert_data.py script.
+
+        your command to run part b should look like:
+
+        c:///path to /database_input_scripts>python insert_data.py
+
+        3. At this point please verify if you have :
+            a. The pung database.
+            b. 27 tables.
+            c. data in all 27 tables from my csvs.
+    
