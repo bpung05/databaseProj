@@ -74,4 +74,16 @@
             a. The pung database.
             b. 27 tables.
             c. data in all 27 tables from my csvs.
-    
+        
+    6. Add in your user tables.
+
+        a. You can run the script to create user tables and insert admin username/password
+
+        This should add 2 tables.
+
+        The file is in database_input_scripts. The file is called 'create_insert_users'.
+
+        Please ensure that you are currently using the Pung table.
+        
+
+### Next is to run your app
