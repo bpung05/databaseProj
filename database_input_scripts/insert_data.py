@@ -2,10 +2,10 @@ import pandas as pd
 import pymysql
 import sys 
 import os
-#I use a relative path to mariadb_config file. I want to put this file in my flask app and dont want you to have to change 2 spots.
+#I use a relative path to csi5302 file. I want to put this file in my flask app and dont want you to have to change 2 spots.
 
 sys.path.append(os.path.abspath('..'))
-import flask_app.mariadbconfig as cfg
+import flask_app.csi5302 as cfg
 
 # Define the database connection details
 config = {

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Selection</title>
+</head>
+<body>
+    <h1>Select Team and Year</h1>
+    <form method="post">
+        <label for="team_name">Team Name:</label>
+        <select name="team" id="team">
+            {% for team in teams %}
+            <option value="{{ team }}" {% if team_output == team %}selected{% endif %}>{{ team }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="year">Year:</label>
+        <select name="year" id="year">
+            {% for year in years %}
+            <option value="{{ year }}" {% if year == year_output %}selected{% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if batting_roster or pitching_roster %}
+    <h1>Roster for {{ team_output }} - {{ year_output }}</h1>
+        {% if batting_roster %}
+        <h2>Batting Statistics</h2>
+        <table>
+            <tr>
+                <th>Playerid</th>
+                <th>Games Played</th>
+                <th>Games Pitched</th>
+                <th>Games Caught</th>
+                <th>Games 1st Base</th>
+                <th>Games 2nd Base</th>
+                <th>Games 3rd Base</th>
+                <th>Games Short Stop</th>
+                <th>Games Left Outfield</th>
+                <th>Games Center Outfield</th>
+                <th>Games Right Outfield</th>
+                <th>Games Designated Hitter</th>
+                <th>Games Pinch Hit</th>
+                <th>Games Pinch Run</th>
+                <th>Batting Average</th>
+                <th>On Base Percentage</th>
+                <th>Slugging</th>
+            </tr>
+            {% for player in batting_roster %}
+                <tr>
+                    <td>{{ player.playerID }}</td>
+                    <td>{{ player.total_games }}</td>
+                    <td>{{ player.G_p }}</td>
+                    <td>{{ player.G_c }}</td>
+                    <td>{{ player.G_1b }}</td>
+                    <td>{{ player.G_2b }}</td>
+                    <td>{{ player.G_3b }}</td>
+                    <td>{{ player.G_ss }}</td>
+                    <td>{{ player.G_lf }}</td>
+                    <td>{{ player.G_cf }}</td>
+                    <td>{{ player.G_rf }}</td>
+                    <td>{{ player.G_dh }}</td>
+                    <td>{{ player.G_ph }}</td>
+                    <td>{{ player.G_pr }}</td>
+                    <td>{{ player.avg }}</td>
+                    <td>{{ player.obp }}</td>
+                    <td>{{ player.slug }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No batting statistics available for {{ team_output }} - {{ year_output}}.</p>
+        {% endif %}
+        
+        <h2>Pitching Statistics</h2>
+        <table>
+            
+        </table>
+    {% else %}
+        <p>No batting or pitching statistics available for {{ team_output }} - {{ year_output}}.</p>
+    {% endif %}
+</body>
+</html>

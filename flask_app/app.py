@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-import mariadbconfig as cfg
+import csi5302 as cfg
 import os
 from models import db
 import models
@@ -41,14 +41,11 @@ def is_logged_in():
     return 'username' in session
 
 #include the other routes such that this page doesnt get cluttered.
-other_routes(app)
+other_routes(app, db)
 
 #start with the login page
 @app.route("/", methods=["GET", "POST"])
 def login():
-    
-    if is_logged_in():
-        print("ALREADY LOGGED IN")
 
     if request.method == "POST":
         username = str(request.form.get("username"))
@@ -65,6 +62,9 @@ def login():
             if correct_pass:
                 #route to the dashboard and login
                 login_user(user)
+                if user.usertype == 'admin':
+                    return redirect(url_for('admindashboard'))
+                
                 return redirect(url_for("userdashboard"))
             else:
                 return render_template("login.html", message="Incorrect Password")
