@@ -12,3 +12,7 @@ class AddUserForm(FlaskForm):
     password = PasswordField('Password:', validators=[DataRequired()])
     accounttype = SelectField('Account Type:', choices=[('user', 'User'), ('admin', 'Admin')], validators=[DataRequired()])
     submit = SubmitField('Add New User')
+
+class SelectTeamYear(FlaskForm):
+    team = SelectField('Account Type:', validators=[DataRequired()])
+    year = SelectField('Account Type:', validators=[DataRequired()])

@@ -95,3 +95,14 @@
 
 
 
+### Extra credit things
+    1I took extra attention to use ORM's. This took me a while to implement but I felt like it was worth it in the end. I know other students probably wont do this part because the SQL queries are more in line with what we had done on previous assignments.
+
+    I felt like the ORM was harder, complex, and showed I could implement things that other web frameworks use like django (uses ORMs heavily)
+
+    2. I added a 'add user' functionality. This was not anywhere requested by the user requriements but I added it anyway. Took a little while but handles some errors like the user already being in the database or the password/username being way too long or having spaces. Overall cool functionality only accessible to the admin via restrictions. Im sure other students wont have that so I think its a +.
+
+    3. I took some time to format things nicely in the dashboards (in my opinion) by formatting the output tables, adding links in accessible spots, and feel like my quality-of-life will be higher than others. Maybe not a large plus but I do think the quality of life features like links in good spots, dashboards for users/admins, and table borders for mine will be better than others.
+
+
+    4. Added the CSRF protections via WTF forms. I think my security in inputs and within the abstraction from the database is pretty good. I think that if you looked through my URLS and front end you be pleased with how I , to the best of young ability, tried to avoid user injection attacks and protect CSRF or other things.

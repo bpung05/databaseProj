@@ -209,7 +209,9 @@ def other_routes(app,db):
         
             batting_roster = getBatting(team, year)
             pitching_roster = getPitching(team,year)
-            return render_template('queryroster.html', team_output = team, year_output = year , teams = teams,  years = years, batting_roster = batting_roster, pitching_roster=pitching_roster, usertype= usertype)
+            return render_template('queryroster.html', team_output = team, year_output = year ,
+                teams = teams,  years = years, batting_roster = batting_roster, 
+                pitching_roster=pitching_roster, usertype= usertype)
 
         return render_template ('queryroster.html', teams=teams, years=years, usertype= usertype)
     
