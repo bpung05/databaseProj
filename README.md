@@ -26,6 +26,11 @@
 
     5. run your application
 
+
+## Installs 
+    pip install flask-wtf
+    pip install flask
+    pip install 
 ### Start by setting up your database
 
     1. Ensure you have MariaDb instance installed
@@ -87,3 +92,6 @@
         
 
 ### Next is to run your app
+
+
+

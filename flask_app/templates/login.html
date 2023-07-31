@@ -8,12 +8,13 @@
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
-    <form method="post">
+    <form style="display: flex; flex-direction: column; align-items: flex-start;" method="post">
+        {{ form.hidden_tag() }}
         <label>Username:</label>
-        <input type="text" name="username" required><br>
+        {{ form.username }}
         <label>Password:</label>
-        <input type="password" name="password" required><br>
-        <input type="submit" value="Login">
+        {{ form.password }}
+        {{ form.submit }}
     </form>
 </body>
 </html>

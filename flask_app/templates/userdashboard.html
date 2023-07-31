@@ -10,13 +10,12 @@
     </div>
 
     <div>
-        <a >Link 1</a>
-        <a >Link 2</a>
-        <a >Link 3</a>
+        <a href="{{url_for('queryroster')}}">Search Roster</a>
     </div>
 
     <!-- Logout button -->
-    <form method="post">
+    <form action="{{url_for('logout')}}" method="post">
+      
         <button type="submit">Logout</button>
     </form>
 </body>

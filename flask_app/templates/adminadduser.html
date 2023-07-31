@@ -8,22 +8,24 @@
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
-    <form method="POST" action="/adminadduser">
+    <form style="display: flex; flex-direction: column; align-items: flex-start;" method="POST" action="/adminadduser">
+        {{ form.hidden_tag() }}
         <label for="username">UserName:</label>
-        <input type="text" name="username" id="username" required>
+        {{ form.username }}
         <br>
         <label for="password">Password:</label>
-        <input type="text" name="password" id="password" required>
+        {{ form.password }}
         <br>
         <div>
             <label>Account Type:</label>
-            <select name="accounttype" id="accounttype" required>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-            </select>
+            {{ form.accounttype }}
         </div>
-        <button type="submit">Submit</button>
+        {{ form.submit }}
     </form>
+    <div>
+        <br>
+        <br>
+    </div>
     <div>
         <a href="{{url_for('admindashboard')}}">Admin Dashboard</a>
     </div>

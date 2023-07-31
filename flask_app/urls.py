@@ -1,8 +1,9 @@
-from flask import render_template, session, url_for, redirect, request, flash
+from flask import render_template, session, url_for, redirect, request, flash, Response
 from flask_login import login_required
 import models
 from functools import wraps
-
+from werkzeug.security import generate_password_hash, check_password_hash
+import forms
 #custom decorator for admin privaledges such that it prevents unauthorized users.
 def admin_required(func):
     @wraps(func)
@@ -46,27 +47,36 @@ def other_routes(app,db):
     @login_required
     @admin_required
     def adminadduser():
+        form = forms.AddUserForm()
         if request.method == 'POST':
-            username = request.form['username']
-            password = request.form['password']
-            accounttype = request.form['accounttype']
+            username = str(form.username.data)
+            password = generate_password_hash(str(form.password.data))
+            accounttype = str(form.accounttype.data)
+
+            if ((' ' in username) or (' ' in str(form.password.data))):
+                return render_template('adminadduser.html', message = "Username and password cannot have spaces", form = form)
+            if (len(username) >= 255) or (len(str(form.password.data)) >= 255):
+                return render_template('adminadduser.html', message = "Username or password too long", form = form)
+
+            if (models.users.query.filter(models.users.username==username).first()):
+                return render_template('adminadduser.html', message = "Username already in database", form = form)
+        
             
             print(username, password, accounttype)
-
-            if models.users.query.filter(username=username).first():
-                return render_template('adminadduser.html', message = "Username already in database")
-        
             #add new user to database because username is not in database.
-            new_user = models.users(username=username, password=password, accounttype=accounttype)
+            new_user = models.users(username=username, password=password, usertype=accounttype)
+            db.session.add(new_user)
+            db.session.commit()
             
             print(new_user.username)
-            return render_template('adminadduser.html', message="User added to database!")
-        return render_template('adminadduser.html')
+            return render_template('adminadduser.html', message="User added to database!", form = form)
+        return render_template('adminadduser.html', form = form)
     
-    @app.route("/searchroster", methods =["GET", "POST"])
+    @app.route("/queryroster", methods =["GET", "POST"])
     @login_required
     def queryroster():
-
+        usertype = session.get('usertype')
+        
         def getBatting(team_given, year_given):
             teamid = getTeamID(team_given, year_given)
             if teamid is None:
@@ -124,11 +134,36 @@ def other_routes(app,db):
                 models.batting.teamID
             ).all()
             
+            """
+            This to have by career
+            
+            .join(
+                models.appearances,
+                ((models.appearances.playerID == models.batting.playerID) &
+                (models.appearances.yearID == models.batting.yearID))
+            ).filter(
+                models.appearances.teamID== teamid,
+                models.appearances.yearID == year_given
+            ).group_by(
+                models.batting.playerID,
+                models.appearances.yearID,
+                models.appearances.teamID
+            ).all()"""
+            """
+            To make it one stint I think:
+            .join(
+                models.appearances,
+                ((models.appearances.playerID == models.batting.playerID) &
+                (models.appearances.yearID == models.batting.yearID))
+            ).filter(
+                models.batting.teamID== teamid,
+                models.batting.yearID == year_given
+            ).group_by(
+                models.batting.playerID,
+                models.batting.yearID,
+                models.batting.teamID"""
             return players_query
 
-       
-
-            
 
         def getPitching(team_given, year_given):
             teamid = getTeamID(team_given, year_given)
@@ -150,11 +185,9 @@ def other_routes(app,db):
             year = int(year)
         
             batting_roster = getBatting(team, year)
-            return render_template('queryroster.html', team_output = team, year_output = year , teams = teams,  years = years, batting_roster = batting_roster)
+            return render_template('queryroster.html', team_output = team, year_output = year , teams = teams,  years = years, batting_roster = batting_roster, usertype= usertype)
 
-        return render_template ('queryroster.html', teams=teams, years=years)
-    
-
+        return render_template ('queryroster.html', teams=teams, years=years, usertype= usertype)
     
     @app.route("/logout", methods = ["POST"])
     def logout():

@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from urls import other_routes
 from datetime import timedelta
+from forms import LoginForm
 
 
 # Replace the following placeholders with your database details
@@ -46,17 +47,15 @@ other_routes(app, db)
 #start with the login page
 @app.route("/", methods=["GET", "POST"])
 def login():
-
+    form = LoginForm()
     if request.method == "POST":
-        username = str(request.form.get("username"))
-        password = str(request.form.get("password"))
+        username = str(form.username.data)
         
-    
         user = models.users.query.filter_by(username=username).first()
         #if the username is in my database
         if user:
             # check the password
-            correct_pass = check_password_hash(user.password, password)
+            correct_pass = check_password_hash(user.password, str(form.password.data))
             session['username'] = user.username
             session['usertype'] = user.usertype
             if correct_pass:
@@ -67,11 +66,11 @@ def login():
                 
                 return redirect(url_for("userdashboard"))
             else:
-                return render_template("login.html", message="Incorrect Password")
+                return render_template("login.html", message="Incorrect Password", form=form)
         else:
-            return render_template("login.html", message="User not found")
+            return render_template("login.html", message="User not found",form =form)
 
-    return render_template("login.html")
+    return render_template("login.html", form = form)
 
 
 if __name__ == '__main__':

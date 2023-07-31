@@ -6,7 +6,7 @@
 <body>
     <h1>Select Team and Year</h1>
     <form method="post">
-        <label for="team_name">Team Name:</label>
+        <label for="team">Team Name:</label>
         <select name="team" id="team">
             {% for team in teams %}
             <option value="{{ team }}" {% if team_output == team %}selected{% endif %}>{{ team }}</option>
@@ -72,13 +72,54 @@
         {% else %}
             <p>No batting statistics available for {{ team_output }} - {{ year_output}}.</p>
         {% endif %}
-        
+        {% if pitching_roster %}
         <h2>Pitching Statistics</h2>
+
         <table>
-            
+            <tr>
+                <th>Playerid</th>
+                <th>Games Pitched</th>
+                <th>Games Started</th>
+                <th>Innings Pitched</th>
+                <th>WHIP</th>
+                <th>Strikeouts per 9 Innings</th>
+            </tr>
+            {% for player in pitching_roster %}
+                <tr>
+                    <td>{{ player.playerID }}</td>
+                    <td>{{ player.G_p }}</td>
+                    <td>{{ player.GS }}</td>
+                    <td>{{ player.ip }}</td>
+                    <td>{{ player.whip }}</td>
+                    <td>{{ player.k_per_9 }}</td>
+                </tr>
+            {% endfor %}
         </table>
-    {% else %}
-        <p>No batting or pitching statistics available for {{ team_output }} - {{ year_output}}.</p>
+
+        {% else %}
+        <div><br></div>
+        <h2>Pitching Statistics</h2>
+        <h>No Pitching Roster</h>
+
+        {% endif %}
+        
+        
     {% endif %}
+
+    {% if usertype == 'admin' %}
+    <div>
+        <a href="{{url_for('admindashboard')}}">Admin Dashboard</a>
+    </div>
+    {% else %}
+    <div>
+        <a href="{{url_for('userdashboard')}}">User Dashboard</a>
+    </div>
+    {% endif %}
+    <!-- Logout button -->
+    <form action="{{url_for('logout')}}" method="post">
+        
+        <button type="submit">Logout</button>
+    </form>
+</body>
 </body>
 </html>
