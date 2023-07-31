@@ -4,6 +4,7 @@ import models
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 import forms
+
 #custom decorator for admin privaledges such that it prevents unauthorized users.
 def admin_required(func):
     @wraps(func)
@@ -168,6 +169,28 @@ def other_routes(app,db):
         def getPitching(team_given, year_given):
             teamid = getTeamID(team_given, year_given)
 
+            pitching_query = models.pitching.query.with_entities(
+                models.appearances.playerID,
+                models.appearances.G_p,
+                models.appearances.GS,
+                (db.func.sum(models.pitching.IPouts) / 3).label('ip'),
+                ((models.pitching.BB + models.pitching.H)/ (models.pitching.IPouts / 3)).label('whip'),
+                ((((models.pitching.SO)/((models.pitching.IPouts) / 3))) * 9).label('k_p_9')
+            ).join(
+                models.appearances,
+                ((models.appearances.playerID == models.pitching.playerID) &
+                (models.appearances.yearID == models.pitching.yearID))
+            ).filter(
+                models.pitching.teamID== teamid,
+                models.pitching.yearID == year_given
+            ).group_by(
+                models.pitching.playerID,
+                models.pitching.yearID,
+                models.pitching.teamID
+            ).all()
+
+
+            return pitching_query
 
         def getTeamID(team_given, year_given):
             teamID = models.teams.query.filter_by(name=team_given, yearID=year_given).first()
@@ -185,7 +208,8 @@ def other_routes(app,db):
             year = int(year)
         
             batting_roster = getBatting(team, year)
-            return render_template('queryroster.html', team_output = team, year_output = year , teams = teams,  years = years, batting_roster = batting_roster, usertype= usertype)
+            pitching_roster = getPitching(team,year)
+            return render_template('queryroster.html', team_output = team, year_output = year , teams = teams,  years = years, batting_roster = batting_roster, pitching_roster=pitching_roster, usertype= usertype)
 
         return render_template ('queryroster.html', teams=teams, years=years, usertype= usertype)
     
