@@ -14,5 +14,10 @@ class AddUserForm(FlaskForm):
     submit = SubmitField('Add New User')
 
 class SelectTeamYear(FlaskForm):
-    team = SelectField('Account Type:', validators=[DataRequired()])
-    year = SelectField('Account Type:', validators=[DataRequired()])
+    teams = SelectField('Team', validators=[DataRequired()])
+    years = SelectField('Year', validators=[DataRequired()])
+    submit = SubmitField('Get Roster')
+
+class QueryUser(FlaskForm):
+    users = SelectField('User', validators=[DataRequired()])
+    submit = SubmitField('Get User Queries')

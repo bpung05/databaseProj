@@ -42,8 +42,16 @@
     </div>
 
     <h1>Select Team and Year</h1>
-    <form method="post">
-        <label for="team">Team Name:</label>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.teams.label }} {{ form.teams() }}
+        <br>
+        {{ form.years.label }} {{ form.years() }}
+        <br>
+        {{ form.submit() }}
+    </form>
+     <!--<form method="post">
+       <label for="team">Team Name:</label>
         <select name="team" id="team">
             {% for team in teams %}
             <option value="{{ team }}" {% if team_output == team %}selected{% endif %}>{{ team }}</option>
@@ -58,7 +66,7 @@
         </select>
         <br>
         <input type="submit" value="Submit">
-    </form>
+    </form>-->
 
     {% if batting_roster or pitching_roster %}
     <h1>Roster for {{ team_output }} - {{ year_output }}</h1>
@@ -87,7 +95,7 @@
             {% for player in batting_roster %}
                 <tr>
                     <td>{{ player.playerID }}</td>
-                    <td>{{ player.total_games }}</td>
+                    <td>{{ player.G_all }}</td>
                     <td>{{ player.G_p }}</td>
                     <td>{{ player.G_c }}</td>
                     <td>{{ player.G_1b }}</td>
@@ -142,12 +150,34 @@
     {% else %}
 
         {% if team_output %}
-            <h1>No Statistics for {{team_output}} in {{year_output}} </h1>
+            <div style="text-align: center;">
+                  <h1 >{{year_output}} not valid. Choose a valid year below for {{ team_output }}</h1>
+            </div>
+          
+            <table>
+                <tr>
+                    <th colspan="6">Valid Years for {{team_output}}</th>
+                </tr>
+                {% for v_year in valid_years %}
+                    {% if loop.index % 6 == 1 %}
+                        <tr>
+                    {% endif %}
+                    <td>{{ v_year }}</td>
+                    {% if loop.index % 6 == 0 or loop.last %}
+                        {% if loop.index % 6 != 0 %}
+                            {% for _ in range(6 - loop.index % 6) %}
+                                <td></td>
+                            {% endfor %}
+                        {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+          
         {% else %}
             <h1>No Team Selected </h1>
         {% endif %}
         
-
     {% endif %}
 </body>
 </html>

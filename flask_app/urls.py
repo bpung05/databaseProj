@@ -98,7 +98,7 @@ def other_routes(app,db):
                 models.appearances.G_dh,
                 models.appearances.G_ph,
                 models.appearances.G_pr,
-                db.func.sum(models.batting.G).label('total_games'),
+                models.appearances.G_all,
                 db.func.sum(models.batting.H).label('total_hits'),
                 db.func.sum(models.batting.AB).label('total_at_bats'),
                 db.func.sum(models.batting.R).label("total_runs"),
@@ -198,24 +198,71 @@ def other_routes(app,db):
                 return None
             return teamID.teamID
 
-        
+        form = forms.SelectTeamYear()
         teams = [team.name for team in models.teams.query.with_entities(models.teams.name).distinct().order_by(models.teams.name)]
         years = [year.yearID for year in models.teams.query.with_entities(models.teams.yearID).distinct()]
         
-        if request.method=='POST':
-            team = request.form['team']
-            year = request.form['year']
+        form.teams.choices=teams
+        form.years.choices=years
+
+        if request.method=='POST' and form.validate():
+            
+            team = form.teams.data
+            year = form.years.data
             year = int(year)
         
+            form.teams.default=team
+            form.years.default=year
+            form.process()
+
+            username= session.get('username')
+            log = models.userlogs(username=username, teamSelect=team, yearSelect=year)
+            db.session.add(log)
+            db.session.commit()
+
             batting_roster = getBatting(team, year)
             pitching_roster = getPitching(team,year)
+            print(team)
+            valid_years = [year.yearID for year in models.teams.query.with_entities(models.teams.yearID).filter(models.teams.name==team).all()]
             return render_template('queryroster.html', team_output = team, year_output = year ,
-                teams = teams,  years = years, batting_roster = batting_roster, 
-                pitching_roster=pitching_roster, usertype= usertype)
+                batting_roster = batting_roster, valid_years=valid_years, 
+                pitching_roster=pitching_roster, usertype= usertype, form=form)
 
-        return render_template ('queryroster.html', teams=teams, years=years, usertype= usertype)
+        return render_template ('queryroster.html', usertype= usertype, form = form)
     
     @app.route("/logout", methods = ["POST"])
     def logout():
         session.clear()
         return redirect(url_for('login'))
+    
+    @app.route("/resultlog", methods=["GET", "POST"])
+    @login_required
+    @admin_required
+    def resultlog():
+
+        form = forms.QueryUser()
+        usertype = session.get('usertype')
+        username= session.get('username')
+
+        #This query is kinda bad. I had to do a left 
+        #outer join because I dont think I cna do a full outer join in flask sql alchemy
+        #the downside is that if a user exists in the logs but not the users I can find it.
+        #however, This wont happen because I am not removing any users. If I ever
+        #wanted to remove users then I would remove the users from both tables.
+        #i would just assume I cant have logs for users than dont exist.
+        query_count = (
+            models.users.query
+            .outerjoin(models.userlogs, models.users.username == models.userlogs.username)
+            .with_entities(models.users.username, db.func.count(models.userlogs.id).label('count'))
+            .group_by(models.users.username)
+            .all()
+        )
+        all_users = [user.username for user in models.users.query.with_entities(models.users.username).distinct()]
+        form.users.choices=all_users
+
+        if request.method=='POST':
+             user = form.users.data
+             user_log = models.userlogs.query.with_entities(models.userlogs.username, models.userlogs.teamSelect, models.userlogs.yearSelect).filter(models.userlogs.username==user).all()
+             return render_template("resultlog.html",username=username, usertype=usertype, query_count=query_count, form=form, results=user_log, user_output=user)
+
+        return render_template("resultlog.html",username=username, usertype=usertype, query_count=query_count, form=form)
