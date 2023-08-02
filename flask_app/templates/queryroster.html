@@ -159,16 +159,14 @@
                     <th colspan="6">Valid Years for {{team_output}}</th>
                 </tr>
                 {% for v_year in valid_years %}
-                    {% if loop.index % 6 == 1 %}
+                    {% if loop.index0 % 6 == 0 %}
                         <tr>
                     {% endif %}
                     <td>{{ v_year }}</td>
                     {% if loop.index % 6 == 0 or loop.last %}
-                        {% if loop.index % 6 != 0 %}
-                            {% for _ in range(6 - loop.index % 6) %}
-                                <td></td>
-                            {% endfor %}
-                        {% endif %}
+                        {% for _ in range(6 - loop.index0 % 6 - 1) %}
+                            <td></td>
+                        {% endfor %}
                         </tr>
                     {% endif %}
                 {% endfor %}
