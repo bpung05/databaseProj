@@ -3,70 +3,106 @@
 <head>
     <title>Team Selection</title>
     <style>
-        /* Center the headings in the table */
+      
         table {
             margin: auto;
         }
 
-        /* Add borders to the table and cells */
         table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
             padding: 8px;
         }
-
-     
-        h2 {
-            text-align: center;
-        }
-
+      
         .top-right-links {
             position: absolute;
             top: 10px;
             right: 10px;
         }
+
+       
+        h1 {
+            text-align: center;
+            color: #e74c3c;
+        }
+
+        h2 {
+            text-align: center;
+            color: #e74c3c;
+            margin-top: 20px;
+        }
+
+        form {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+ 
+        input[type="submit"] {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #c0392b;
+        }
+
+
+        th {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        button[type="submit"] {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
-    <!-- Links at the top right -->
+
     <div class="top-right-links">
         {% if usertype == 'admin' %}
             <a href="{{url_for('admindashboard')}}">Admin Dashboard</a>
         {% else %}
             <a href="{{url_for('userdashboard')}}">User Dashboard</a>
         {% endif %}
-        <!-- Logout button -->
+
         <form action="{{url_for('logout')}}" method="post">
             <button type="submit">Logout</button>
         </form>
     </div>
 
-    <h1>Select Team and Year</h1>
+    <h1 style="text-align: left">Select Team and Year</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
         {{ form.teams.label }} {{ form.teams() }}
         <br>
         {{ form.years.label }} {{ form.years() }}
         <br>
-        {{ form.submit() }}
-    </form>
-     <!--<form method="post">
-       <label for="team">Team Name:</label>
-        <select name="team" id="team">
-            {% for team in teams %}
-            <option value="{{ team }}" {% if team_output == team %}selected{% endif %}>{{ team }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <label for="year">Year:</label>
-        <select name="year" id="year">
-            {% for year in years %}
-            <option value="{{ year }}" {% if year == year_output %}selected{% endif %}>{{ year }}</option>
-            {% endfor %}
-        </select>
-        <br>
         <input type="submit" value="Submit">
-    </form>-->
+    </form>
 
     {% if batting_roster or pitching_roster %}
     <h1>Roster for {{ team_output }} - {{ year_output }}</h1>
@@ -179,3 +215,8 @@
     {% endif %}
 </body>
 </html>
+
+
+
+
+

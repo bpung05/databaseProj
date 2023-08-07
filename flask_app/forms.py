@@ -21,3 +21,6 @@ class SelectTeamYear(FlaskForm):
 class QueryUser(FlaskForm):
     users = SelectField('User', validators=[DataRequired()])
     submit = SubmitField('Get User Queries')
+
+class CSRFprotection(FlaskForm):
+    field = StringField('field', validators=[DataRequired()])

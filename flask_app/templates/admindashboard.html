@@ -2,24 +2,88 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        
+        h1 {
+            color: #e74c3c; 
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        p {
+            text-align: center;
+        }
+        
+        div.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #ffffff; 
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        
+        div.links {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+            padding: 10px;
+        }
+        
+        a:hover {
+            background-color: #f2f2f2; 
+        }
+        
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #e74c3c; 
+            color: #ffffff; 
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #c0392b; 
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h1>Admin Dashboard</h1>
-        <p>Welcome, {{ username }}!</p>
+    <div class="container">
+        <h1>{{username|capitalize}}'s Dashboard</h1>
     </div>
 
-    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-      
+    <div class="container links">
         <a href="{{url_for('adminadduser')}}">Add User</a>
         <a href="{{url_for('queryroster')}}">Search Roster</a>
         <a href="{{url_for('resultlog')}}">Result Log</a>
     </div>
 
     <!-- Logout button -->
-    <form action="{{url_for('logout')}}" method="post">
-      
-        <button type="submit">Logout</button>
-    </form>
+    <div class="container">
+        <form action="{{url_for('logout')}}" method="post">
+            {{ form.hidden_tag()}}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
 </body>
 </html>

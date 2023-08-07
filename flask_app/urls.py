@@ -30,19 +30,21 @@ def user_required(func):
 
 def other_routes(app,db):
 
-    @app.route("/userdashboard", methods=["GET"])
+    @app.route("/userdashboard", methods=["GET", "POST"])
     @login_required
     @user_required
     def userdashboard():
+        form = forms.CSRFprotection()
         username = session.get('username')
-        return render_template('userdashboard.html', username=username)
+        return render_template('userdashboard.html', username=username , form=form)
     
-    @app.route("/admindashboard", methods =["GET"])
+    @app.route("/admindashboard", methods =["GET", "POST"])
     @login_required
     @admin_required
     def admindashboard():
+        form = forms.CSRFprotection()
         username= session.get('username')
-        return render_template('admindashboard.html', username=username)
+        return render_template('admindashboard.html', username=username, form=form)
     
     @app.route("/adminadduser", methods=['GET','POST'])
     @login_required
