@@ -430,7 +430,6 @@ class seriespost(db.Model):
     ties = db.Column(db.Integer)
 
 
-
 class teams(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     yearID = db.Column(db.Integer)

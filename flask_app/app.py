@@ -10,17 +10,19 @@ from datetime import timedelta
 from forms import LoginForm
 
 
+#One thing I am concerned about is setting a "magic number port" so I added a change value for the port of mariadb if you have issues
+PORT = "3306"
+
 # Replace the following placeholders with your database details
 DB_HOST = cfg.mysql['location']  # Or the appropriate driver for your database
 DB_USER = cfg.mysql['user']
 DB_PASSWORD=  cfg.mysql['password']
 DB_NAME = cfg.mysql['database']
 
-
 #startapp and configure settings
 app = Flask(__name__)
 app.secret_key = os.urandom(253) #secret keys are helpful to encrpty and protect data
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:3306/{DB_NAME}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{PORT}/{DB_NAME}"
 app.config['SESSION_PERMANENT'] = False
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 app.config['SESSION_PROTECTION'] = 'strong'
@@ -50,6 +52,12 @@ def login():
     form = LoginForm()
     if request.method == "POST":
         username = str(form.username.data)
+
+        if ((' ' in username) or (' ' in str(form.password.data))):
+            return render_template('login.html', message = "Username and password cannot have spaces", form = form)
+        if (len(username) >= 255) or (len(str(form.password.data)) >= 255):
+            return render_template('login.html', message = "Username or password too long", form = form)
+
         
         user = models.users.query.filter_by(username=username).first()
         #if the username is in my database
