@@ -1,3 +1,4 @@
+PLEASE READ THE WHOLE README. THANKS
 
 # Database Project Pung
 ## Where to Start
