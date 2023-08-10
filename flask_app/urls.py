@@ -65,13 +65,12 @@ def other_routes(app,db):
                 return render_template('adminadduser.html', message = "Username already in database", form = form)
         
             
-            print(username, password, accounttype)
+       
             #add new user to database because username is not in database.
             new_user = models.users(username=username, password=password, usertype=accounttype)
             db.session.add(new_user)
             db.session.commit()
             
-            print(new_user.username)
             return render_template('adminadduser.html', message="User added to database!", form = form)
         return render_template('adminadduser.html', form = form)
     
@@ -224,7 +223,7 @@ def other_routes(app,db):
 
             batting_roster = getBatting(team, year)
             pitching_roster = getPitching(team,year)
-            print(team)
+         
             valid_years = [year.yearID for year in models.teams.query.with_entities(models.teams.yearID).filter(models.teams.name==team).all()]
             return render_template('queryroster.html', team_output = team, year_output = year ,
                 batting_roster = batting_roster, valid_years=valid_years, 
