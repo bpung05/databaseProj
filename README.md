@@ -2,6 +2,7 @@ PLEASE READ THE WHOLE README. THANKS
 
 # Database Project Pung
 ## Where to Start
+
     1. Begin by observing the different directories that I include
         a. database_input_scripts -> Holds scripts to insert data into your database. Includes the .sql file to create a database. 
         The paths to the lahman csvs will be relative so as long as you have the files in same main folder you will be good. 
@@ -21,7 +22,6 @@ PLEASE READ THE WHOLE README. THANKS
             -database_dump
             -flask_application
             -database_input_scripts
-
 
     2. Set up your database
         -2nd section
@@ -85,7 +85,6 @@ PLEASE READ THE WHOLE README. THANKS
 
             from there you should see 27 tables created.
 
-
             b. use the python script 'insert_data.py' to insert all your data.
             -please note that I have included the mariadb config file in two places: 
             one of which is the database_input_scripts to allow my scripts to connect to the database. 
@@ -128,9 +127,6 @@ PLEASE READ THE WHOLE README. THANKS
             example: 
             -bin\mysql -u web -p pung < "C:\Pung\Baylor\Found Databases\python repo\project\database_dump\pung_dump.sql"
 
-
-
-
 ### Next is to set up your virtual environment
     -Start by setting up your new local host virtual environment: 
             Make sure that you have opened a new command prompt and navigated your working directory to the overall project directory
@@ -161,11 +157,7 @@ PLEASE READ THE WHOLE README. THANKS
         pip install pymysql
         pip install werkzeug (may already be satisfied via flask)
 
-
-    Now you should be have your activate environment and all libraries installed
-
-
-
+    Now you should have your activate environment and all libraries installed
 
 ### Next is to run your app
     In your new command window for the virtual environment change your working directory to flask_app.
@@ -218,13 +210,10 @@ PLEASE READ THE WHOLE README. THANKS
 
     Hopefully everything went smoothly!
 
-
-
-
 ### Extra credit things
     1. I took extra attention to use ORM's. This took me a while to implement but I felt like it was worth it in the end.
     I know other students probably wont do this part because the SQL queries are more in line with what
-     we had done on previous assignments and seemed to take signficantly less set-up time.
+    we had done on previous assignments and seemed to take signficantly less set-up time.
 
     I felt like the ORM was harder, complex, and showed I could implement things that other web
      frameworks use like django (uses ORMs heavily) use in place of direct sql queries.
@@ -238,7 +227,10 @@ PLEASE READ THE WHOLE README. THANKS
     3. I took some time to format things nicely in the dashboards (in my opinion) by formatting the output tables, 
     adding links in accessible spots, and feel like my quality-of-life will be higher than others. 
     Maybe not a large plus but I do think the quality of life features like links in good spots, 
-    dashboards for users/admins, and table borders for mine will be better than others. I would include the additional CSS in this extra credit point. I think adding all of this css 
+    dashboards for users/admins, and table borders for mine will be better than others. 
+    
+    I would include the additional CSS for color-coding and styling in this extra credit point.
+    I think adding all of this css 
     is very important because for demos people honestly 
     underestimate the amount of work the backend is 
     and care a lot about how things look.
@@ -246,10 +238,9 @@ PLEASE READ THE WHOLE README. THANKS
 
     4. Added the CSRF protections via WTF forms. I think my security in inputs and within the abstraction 
     from the database is pretty good. I think that if you looked through my URLS and front end you
-    be pleased with how I , to the best of young ability, tried to avoid user injection attacks
+    be pleased with how I , to the best of my young ability, tried to avoid user injection attacks
     and protect CSRF or other things. Put protections for length and spaces in for
     username and password in login and creation of users.
-
 
 Image 
 ![Alt text](image.png)
