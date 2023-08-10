@@ -160,7 +160,7 @@ PLEASE READ THE WHOLE README. THANKS
     Now you should have your activate environment and all libraries installed
 
 ### Next is to run your app
-    In your new command window for the virtual environment change your working directory to flask_app.
+    In your new command window for the virtual environment change your working directory to the flask_app directory.
     Now run 'python app.py'. This will start the new server for you. You can navigate to the http webpage that it gives you.
 
     I am assuming you are using the database dump given so everything should now connect fine. 
