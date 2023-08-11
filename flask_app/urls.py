@@ -83,9 +83,12 @@ def other_routes(app,db):
             teamid = getTeamID(team_given, year_given)
             if teamid is None:
                 return None
+            
+         
             #get the aggragate stats for players by joining batting and appearances
             players_query = models.batting.query.with_entities(
                 db.func.concat(models.people.nameFirst, " ", models.people.nameLast).label('full_name'),
+                models.appearances.G_all,
                 models.batting.playerID,
                 models.batting.yearID,
                 models.appearances.G_p,
@@ -100,7 +103,6 @@ def other_routes(app,db):
                 models.appearances.G_dh,
                 models.appearances.G_ph,
                 models.appearances.G_pr,
-                models.appearances.G_all,
                 db.func.sum(models.batting.H).label('total_hits'),
                 db.func.sum(models.batting.AB).label('total_at_bats'),
                 db.func.sum(models.batting.R).label("total_runs"),
@@ -127,10 +129,11 @@ def other_routes(app,db):
             ).join(
                 models.appearances,
                 ((models.appearances.playerID == models.batting.playerID) &
-                (models.appearances.yearID == models.batting.yearID))
-            ).join(models.people,(models.people.playerID == models.appearances.playerID)).filter(
-                models.batting.teamID== teamid,
-                models.batting.yearID == year_given
+                (models.appearances.yearID == models.batting.yearID) & (models.batting.teamID==models.appearances.teamID))
+            ).join(models.people,(models.people.playerID == models.appearances.playerID)
+            ).filter(
+                models.appearances.teamID== teamid,
+                models.appearances.yearID == year_given
             ).group_by(
                 models.batting.playerID,
                 models.batting.yearID,
@@ -183,11 +186,11 @@ def other_routes(app,db):
             ).join(
                 models.appearances,
                 ((models.appearances.playerID == models.pitching.playerID) &
-                (models.appearances.yearID == models.pitching.yearID))
+                (models.appearances.yearID == models.pitching.yearID) & (models.pitching.teamID==models.appearances.teamID))
             ).join(models.people, (models.people.playerID == models.pitching.playerID)
             ).filter(
-                models.pitching.teamID== teamid,
-                models.pitching.yearID == year_given
+                models.appearances.teamID== teamid,
+                models.appearances.yearID == year_given
             ).group_by(
                 models.pitching.playerID,
                 models.pitching.yearID,
