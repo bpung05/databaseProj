@@ -110,6 +110,7 @@
         <h2>Batting Statistics</h2>
         <table>
             <tr>
+                <th>Name</th>
                 <th>Playerid</th>
                 <th>Games Played</th>
                 <th>Games Pitched</th>
@@ -130,6 +131,7 @@
             </tr>
             {% for player in batting_roster %}
                 <tr>
+                    <td>{{ player.full_name }}</td>
                     <td>{{ player.playerID }}</td>
                     <td>{{ player.G_all }}</td>
                     <td>{{ player.G_p }}</td>
@@ -158,6 +160,7 @@
 
         <table>
             <tr>
+                <th>Name</th>
                 <th>Playerid</th>
                 <th>Games Pitched</th>
                 <th>Games Started</th>
@@ -167,6 +170,7 @@
             </tr>
             {% for player in pitching_roster %}
                 <tr>
+                    <td>{{ player.full_name }}</td>
                     <td>{{ player.playerID }}</td>
                     <td>{{ player.G_p }}</td>
                     <td>{{ player.GS }}</td>

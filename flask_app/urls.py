@@ -85,6 +85,7 @@ def other_routes(app,db):
                 return None
             #get the aggragate stats for players by joining batting and appearances
             players_query = models.batting.query.with_entities(
+                db.func.concat(models.people.nameFirst, " ", models.people.nameLast).label('full_name'),
                 models.batting.playerID,
                 models.batting.yearID,
                 models.appearances.G_p,
@@ -127,7 +128,7 @@ def other_routes(app,db):
                 models.appearances,
                 ((models.appearances.playerID == models.batting.playerID) &
                 (models.appearances.yearID == models.batting.yearID))
-            ).filter(
+            ).join(models.people,(models.people.playerID == models.appearances.playerID)).filter(
                 models.batting.teamID== teamid,
                 models.batting.yearID == year_given
             ).group_by(
@@ -168,19 +169,22 @@ def other_routes(app,db):
 
 
         def getPitching(team_given, year_given):
+
             teamid = getTeamID(team_given, year_given)
 
             pitching_query = models.pitching.query.with_entities(
+                db.func.concat(models.people.nameFirst, " ", models.people.nameLast).label('full_name'),
                 models.appearances.playerID,
                 models.appearances.G_p,
                 models.appearances.GS,
-                (db.func.sum(models.pitching.IPouts) / 3).label('ip'),
+                (models.pitching.IPouts / 3).label('ip'),
                 ((models.pitching.BB + models.pitching.H)/ (models.pitching.IPouts / 3)).label('whip'),
                 ((((models.pitching.SO)/((models.pitching.IPouts) / 3))) * 9).label('k_p_9')
             ).join(
                 models.appearances,
                 ((models.appearances.playerID == models.pitching.playerID) &
                 (models.appearances.yearID == models.pitching.yearID))
+            ).join(models.people, (models.people.playerID == models.pitching.playerID)
             ).filter(
                 models.pitching.teamID== teamid,
                 models.pitching.yearID == year_given
