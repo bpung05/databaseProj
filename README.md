@@ -206,6 +206,19 @@ PLEASE READ THE WHOLE README. THANKS
     I left the app in debug mode so if any errors did occur you could find them. 
     In produciton I would turn it to production such that users can see the errors.
 
+
+
+    Admin functionality:
+        -admin can add user
+        -admin can query logs
+        -admin can query rosters
+    User functionality:
+        -user can query rosters
+
+    Both admin and user can logout
+
+    Explore and hopefully you find some interesting statistics. Go reds!
+
     Hopefully everything went smoothly!
 
 ### Extra credit things
@@ -240,5 +253,4 @@ PLEASE READ THE WHOLE README. THANKS
     and protect CSRF or other things. Put protections for length and spaces in for
     username and password in login and creation of users.
 
-Image 
-![Alt text](image.png)
+![Alt text](image-1.png)
