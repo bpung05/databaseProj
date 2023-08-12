@@ -84,10 +84,8 @@ PLEASE READ THE WHOLE README. THANKS
             from there you should see 27 tables created.
 
             b. use the python script 'insert_data.py' to insert all your data.
-            -please note that I have included the mariadb config file in two places: 
-            one of which is the database_input_scripts to allow my scripts to connect to the database. 
-            You may need to change this if you are using a different user than is 
-            defined in the instrcutions and previous setup. The config file has the web, mypass user in it.
+            - The config file has the web, mypass user in it. It is found in the flask_app directory under csi5302.py. If you need to
+            change your connection policy for username etc, please edit this file.
 
             *****ENSURE THAT YOU ARE WORKING IN THE DATABASE_INPUT_SCRIPTS DIRECTORY WHEN RUNNING THIS*******
 
